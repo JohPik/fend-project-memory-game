@@ -30,11 +30,11 @@ function shuffle(array) {
 
 // when restart button is clicked cards are shuffled
 restart.addEventListener("click", function(){
-  cards = shuffle(cards);
-  for (let i = 1; i <= card.length; i++) {
+  console.log(cards);
+  for (let i = 0; i < card.length; i++) {
       card[i].setAttribute("class", "fa " + cards[i]);
   }
-  console.log(cards);
+    cards = shuffle(cards);
 });
 
 
