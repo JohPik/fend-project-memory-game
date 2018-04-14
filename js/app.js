@@ -1,7 +1,10 @@
 /*
  * Create a list that holds all of your cards
  */
-
+const deck = document.querySelector(".deck");
+const restart = document.querySelector(".restart i");
+let cards = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-bomb", "fa-leaf", "fa-bicycle", "fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-bomb", "fa-leaf", "fa-bicycle"];
+let card = document.querySelectorAll(".card i");
 
 /*
  * Display the cards on the page
@@ -24,6 +27,15 @@ function shuffle(array) {
 
     return array;
 }
+
+// when restart button is clicked cards are shuffled
+restart.addEventListener("click", function(){
+  cards = shuffle(cards);
+  for (let i = 1; i <= card.length; i++) {
+      card[i].setAttribute("class", "fa " + cards[i]);
+  }
+  console.log(cards);
+});
 
 
 /*
