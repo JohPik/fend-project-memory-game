@@ -1,10 +1,16 @@
 /*
  * Create a list that holds all of your cards
  */
-const deck = document.querySelector(".deck");
+//const deck = document.querySelector(".deck");
 const restart = document.querySelector(".restart i");
 let cards = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-bomb", "fa-leaf", "fa-bicycle", "fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-bomb", "fa-leaf", "fa-bicycle"];
 let card = document.querySelectorAll(".card i");
+let cardContainer = document.querySelectorAll(".card");
+//let listOfCardClass = [];
+let listOfOpenedCards = [];
+let listOfMatchedCards = [];
+let moves = document.querySelector(".moves");
+let score = 0;
 
 /*
  * Display the cards on the page
@@ -12,6 +18,26 @@ let card = document.querySelectorAll(".card i");
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+
+// Make the deck ready once the DOM is loaded
+ document.addEventListener("DOMContentLoaded", innit);
+
+// Start the game
+ function innit() {
+   cards = shuffle(cards);
+     for (let i = 0; i < cardContainer.length; i++) {
+         cardContainer[i].setAttribute("class", "card");
+     }
+     for (let i = 0; i < card.length; i++) {
+         card[i].setAttribute("class", "fa " + cards[i]);
+     }
+     score = 0;
+    return moves.innerHTML = score;
+   }
+
+//when restart button is clicked the game restart
+restart.addEventListener("click", innit);
+
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -24,27 +50,179 @@ function shuffle(array) {
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
-
     return array;
 }
 
-// when restart button is clicked cards are shuffled
-restart.addEventListener("click", function(){
-  console.log(cards);
-  for (let i = 0; i < card.length; i++) {
-      card[i].setAttribute("class", "fa " + cards[i]);
+
+
+
+
+// for ( let i = 0; i < cardContainer.length ; i++){
+//     cardContainer[i].addEventListener('click', function myFunction (evt) {
+//       let clikedCard = evt.target; // <- the clicked card
+//       let clikedCardClass = evt.target.children[0].classList[1]; // <- the class of clicked card symbol
+//       console.log(cardContainer[i]);
+//       displayCard(clikedCard);//show clicked card
+//       addOpenCards(clikedCard);// add clicked card to list of open cards
+//       moveCounter();// add one move
+//   });
+// }
+
+//create Event listener if cards is clicked
+for ( let i = 0; i < cardContainer.length ; i++){
+    cardContainer[i].addEventListener('click', trigger);
+}
+
+function trigger (evt) {
+  let clikedCard = evt.target; // <- the clicked card
+  let clikedCardClass = evt.target.children[0].classList[1]; // <- the class of clicked card symbol
+  if (clikedCard.classList.contains("show")) {
+    clikedCard.removeEventListener('click', trigger); // <- remove event listener if the card is already flipped
+    console.log("this card is fliped already");
+  } else { // run the code
+    displayCard(clikedCard);//show clicked card
+    addOpenCards(clikedCard);// add clicked card to list of open cards
+    moveCounter();// add one move
   }
-    cards = shuffle(cards);
-});
+
+}
+
+
+// Flip and show the card
+function displayCard(clikedCard) {
+  clikedCard.classList.toggle("open");
+  clikedCard.classList.toggle("show");
+}
+
+// Add the card to a *list* of "open" cards
+function addOpenCards(clikedCard) {
+  if (listOfOpenedCards.length < 1 ) {
+    listOfOpenedCards.push(clikedCard);
+    return listOfOpenedCards;
+  } else { // check if the card match
+    let firstCardSymbol = listOfOpenedCards[0].children[0].classList[1];
+    let secondCardSymbol = clikedCard.children[0].classList[1];
+     if (firstCardSymbol == secondCardSymbol) { //when the cards matched
+       lockMatchCards(clikedCard);
+    } else { //when the cards DO NOT matched
+      cardsNotMatching(clikedCard)
+            }
+    //console.log(listOfOpenedCards[0].children[0].classList[1]);
+    //console.log(clikedCard.children[0].classList[1]);
+  }
+}
+
+// Lock the cards in open position MATCH
+function lockMatchCards(clikedCard) {
+  listOfOpenedCards[0].classList.add("match");
+  clikedCard.classList.add("match");
+  listOfOpenedCards[0].classList.remove("open");
+  clikedCard.classList.remove("open");
+  console.log("it is a matched");
+  listOfOpenedCards.length = 0;
+}
+
+// Remove cards from the list and hide cards
+function cardsNotMatching(clikedCard) {
+  setTimeout(displayCard, 500, listOfOpenedCards[0]); // give 1 sec for player to remember
+  setTimeout(displayCard, 500, clikedCard);           //the cards before they flip back to normal
+  listOfOpenedCards.length = 0;
+  console.log("wrong");
+}
+
+// Counting the number of moves
+function moveCounter() {
+  score++
+  return moves.innerHTML = score;
+}
+
+
+// function addOpenCards() {
+//   // if the list already has another card:
+//       // if match lock the cards lockMatchCards()
+//       // if the card do not match cardsNotMatching()
+//       // increment the move counter moveCounter()
+//       // if all cards are matched
+//
+//
+// }
+
+
+function winning() {
+ // all cards have matched
+
+}
 
 
 /*
  * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
+ *  - display the card's symbol (put this functionality in another
+        function that you call from this one)
+ *  - add the card to a *list* of "open" cards
+      (put this functionality in another function that you call from this one)
  *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
+ *    + if the cards do match, lock the cards in the open position
+      (put this functionality in another function that you call from this one)
+ *    + if the cards do not match, remove the cards from the list and hide the
+      card's symbol (put this functionality in another function that you call from this one)
+ *    + increment the move counter and display it on the page (put this functionality in
+      another function that you call from this one)
+ *    + if all cards have matched, display a message with the final score (put this functionality
+      in another function that you call from this one)
+ */
+
+ /*
+
+
+ // Detects when card is clicked
+ for ( let i = 0; i < cardContainer.length ; i++){
+       cardContainer[i].addEventListener('click', function myFunction (evt) {
+         let clikedCard = evt.target; // <- the clicked card
+         let clikedCardClass = evt.target.children[0].classList[1]; // <- the class of clicked card symbol
+         matchingCards(clikedCardClass, clikedCard);
+     });
+ }
+
+ // Game logic
+ function matchingCards(clikedCardClass, clikedCard){
+   if (listOfCardClass.length < 1) { // <- flip the first card
+     listOfCardClass.push(clikedCardClass);
+     listOfOpenedCards.push(clikedCard);
+     //clikedCard.classList.toggle("open");
+     //clikedCard.classList.toggle("show");
+     return listOfCardClass;
+   } else {
+     if (listOfCardClass[0] == clikedCardClass ) { // <- when two cards matched
+       matchedCards(clikedCardClass, clikedCard)
+       listOfCardClass.length = 0;
+       return listOfCardClass;
+     } else { // <- when cards do not matched
+       listOfCardClass.length = 0;
+       listOfOpenedCards.length = 0;
+       alert("clear the list");
+       return listOfCardClass;
+     }
+   }
+ }
+
+
+ // count the number of cards that have beem matched
+ function matchedCards(clikedCardClass, clikedCard) {
+   if (listOfMatchedCards.length < 7) { // the matched cards are added to the list
+     listOfMatchedCards.push(clikedCardClass);
+     matchTheCards(clikedCard)
+     return listOfMatchedCards;
+   } else { // player wins when all cards are matched
+     alert ("You WIN");
+   }
+ }
+
+ // change the class of the card that have meen matched
+ function matchTheCards(clikedCard) {
+   listOfOpenedCards.push(clikedCard);
+   listOfOpenedCards[0].classList.add("match");
+   listOfOpenedCards[1].classList.add("match");
+   listOfOpenedCards.length = 0;
+ }
+
  */
