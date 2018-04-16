@@ -8,9 +8,11 @@ let card = document.querySelectorAll(".card i");
 let cardContainer = document.querySelectorAll(".card");
 //let listOfCardClass = [];
 let listOfOpenedCards = [];
-let listOfMatchedCards = [];
+//let listOfMatchedCards = [];
+let numberOfMatchedCards = 0;
 let moves = document.querySelector(".moves");
 let score = 0;
+let starsList = document.querySelector(".stars");
 
 /*
  * Display the cards on the page
@@ -25,19 +27,21 @@ let score = 0;
 // Start the game
  function innit() {
    cards = shuffle(cards);
-     for (let i = 0; i < cardContainer.length; i++) {
-         cardContainer[i].setAttribute("class", "card");
-     }
-     for (let i = 0; i < card.length; i++) {
-         card[i].setAttribute("class", "fa " + cards[i]);
-     }
-     score = 0;
+
+   for (let i = 0; i < cardContainer.length; i++) {
+       cardContainer[i].setAttribute("class", "card");
+   }
+   for (let i = 0; i < card.length; i++) {
+       card[i].setAttribute("class", "fa " + cards[i]);
+   }
+    score = 0;
+    numberOfMatchedCards = 0;
+    starsList.innerHTML = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`;
     return moves.innerHTML = score;
    }
 
 //when restart button is clicked the game restart
 restart.addEventListener("click", innit);
-
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -52,21 +56,6 @@ function shuffle(array) {
     }
     return array;
 }
-
-
-
-
-
-// for ( let i = 0; i < cardContainer.length ; i++){
-//     cardContainer[i].addEventListener('click', function myFunction (evt) {
-//       let clikedCard = evt.target; // <- the clicked card
-//       let clikedCardClass = evt.target.children[0].classList[1]; // <- the class of clicked card symbol
-//       console.log(cardContainer[i]);
-//       displayCard(clikedCard);//show clicked card
-//       addOpenCards(clikedCard);// add clicked card to list of open cards
-//       moveCounter();// add one move
-//   });
-// }
 
 //create Event listener if cards is clicked
 for ( let i = 0; i < cardContainer.length ; i++){
@@ -120,6 +109,7 @@ function lockMatchCards(clikedCard) {
   clikedCard.classList.remove("open");
   console.log("it is a matched");
   listOfOpenedCards.length = 0;
+  NumberOfMatchedCards(clikedCard);
 }
 
 // Remove cards from the list and hide cards
@@ -130,28 +120,34 @@ function cardsNotMatching(clikedCard) {
   console.log("wrong");
 }
 
-// Counting the number of moves
+// Counting the number of moves and display the Number of stars
 function moveCounter() {
+if (score < 10) { // for less than 10 moves, 3 Stars
+  starsList.innerHTML = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`;
+} else if (score < 20) { // for less than 20 moves, 2 Stars
+  starsList.innerHTML = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star-o"></i></li>`;
+} else if (score < 30) { // for less than 30 moves, 1 Stars
+  starsList.innerHTML = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star-o"></i></li><li><i class="fa fa-star-o"></i></li>`;
+} else { // for more than 30 moves, 0 Stars
+  starsList.innerHTML = `<li><i class="fa fa-star-o"></i></li><li><i class="fa fa-star-o"></i></li><li><i class="fa fa-star-o"></i></li>`;
+}
   score++
   return moves.innerHTML = score;
 }
 
-
-// function addOpenCards() {
-//   // if the list already has another card:
-//       // if match lock the cards lockMatchCards()
-//       // if the card do not match cardsNotMatching()
-//       // increment the move counter moveCounter()
-//       // if all cards are matched
-//
-//
-// }
-
-
-function winning() {
- // all cards have matched
-
+// Check for the Number of Matched Cards
+function NumberOfMatchedCards(clikedCard) {
+  if (numberOfMatchedCards < 7) {
+    numberOfMatchedCards++;
+    console.log(numberOfMatchedCards);
+  } else {
+    setTimeout(winning, 500);
+  }
 }
+
+function winning(){
+  console.log("You Win");
+};
 
 
 /*
@@ -169,60 +165,4 @@ function winning() {
       another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality
       in another function that you call from this one)
- */
-
- /*
-
-
- // Detects when card is clicked
- for ( let i = 0; i < cardContainer.length ; i++){
-       cardContainer[i].addEventListener('click', function myFunction (evt) {
-         let clikedCard = evt.target; // <- the clicked card
-         let clikedCardClass = evt.target.children[0].classList[1]; // <- the class of clicked card symbol
-         matchingCards(clikedCardClass, clikedCard);
-     });
- }
-
- // Game logic
- function matchingCards(clikedCardClass, clikedCard){
-   if (listOfCardClass.length < 1) { // <- flip the first card
-     listOfCardClass.push(clikedCardClass);
-     listOfOpenedCards.push(clikedCard);
-     //clikedCard.classList.toggle("open");
-     //clikedCard.classList.toggle("show");
-     return listOfCardClass;
-   } else {
-     if (listOfCardClass[0] == clikedCardClass ) { // <- when two cards matched
-       matchedCards(clikedCardClass, clikedCard)
-       listOfCardClass.length = 0;
-       return listOfCardClass;
-     } else { // <- when cards do not matched
-       listOfCardClass.length = 0;
-       listOfOpenedCards.length = 0;
-       alert("clear the list");
-       return listOfCardClass;
-     }
-   }
- }
-
-
- // count the number of cards that have beem matched
- function matchedCards(clikedCardClass, clikedCard) {
-   if (listOfMatchedCards.length < 7) { // the matched cards are added to the list
-     listOfMatchedCards.push(clikedCardClass);
-     matchTheCards(clikedCard)
-     return listOfMatchedCards;
-   } else { // player wins when all cards are matched
-     alert ("You WIN");
-   }
- }
-
- // change the class of the card that have meen matched
- function matchTheCards(clikedCard) {
-   listOfOpenedCards.push(clikedCard);
-   listOfOpenedCards[0].classList.add("match");
-   listOfOpenedCards[1].classList.add("match");
-   listOfOpenedCards.length = 0;
- }
-
  */
