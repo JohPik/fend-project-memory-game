@@ -14,6 +14,7 @@ let moves = document.querySelector(".moves");
 let score = 0;
 let starsList = document.querySelector(".stars");
 
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -147,9 +148,55 @@ function NumberOfMatchedCards(clikedCard) {
 
 function winning(){
   console.log("You Win");
+  // display correct values in the Modal Section
+  const finalStars = document.querySelector(".modal-content .stars"); // Numbers of Stars
+  finalStars.innerHTML = starsList.innerHTML;
+
+  const finalMoves = document.querySelector(".finalMoves"); // Numbers of moves
+  finalMoves.innerHTML = score;
+
+  const finalTime = document.querySelector(".finalTime"); // Time it took the player to finish
+  finalTime.innerHTML = "need to be changed";
+
+   // Show the Modal Section
+  modal.style.display = "block";
+
 };
 
 
+
+
+// Set the Modal
+const modal = document.querySelector(".modal");
+const btnRestart = document.querySelector("button.restart");
+
+// Get the <span> element that closes the modal
+const span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+
+btnRestart.addEventListener("click", function() {
+  modal.style.display = "none";
+  innit()
+});
+
+
+
+
+
+
+
+// When the user clicks on <span> (x), close the modal
+// span.onclick = function() {
+//     modal.style.display = "none";
+// }
+
+// When the user clicks anywhere outside of the modal, close it
+// window.onclick = function(event) {
+//     if (event.target == modal) {
+//         modal.style.display = "none";
+//     }
+// }
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another
@@ -165,4 +212,39 @@ function winning(){
       another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality
       in another function that you call from this one)
+ */
+
+ /*
+ var timer = [0,0,0,0];
+ var interval;
+ var timerRunning = false;
+
+ // Add leading zero to numbers 9 or below (purely for aesthetics):
+ function leadingZero(time) {
+     if (time <= 9) {
+         time = "0" + time;
+     }
+     return time;
+ }
+
+ // Run a standard minute/second/hundredths timer:
+ function runTimer() {
+     let currentTime = leadingZero(timer[0]) + ":" + leadingZero(timer[1]) + ":" + leadingZero(timer[2]);
+     theTimer.innerHTML = currentTime;
+     timer[3]++;
+
+     timer[0] = Math.floor((timer[3]/100)/60);
+     timer[1] = Math.floor((timer[3]/100) - (timer[0] * 60));
+     timer[2] = Math.floor(timer[3] - (timer[1] * 100) - (timer[0] * 6000));
+ }
+
+// restart
+ clearInterval(interval);
+     interval = null;
+     timer = [0,0,0,0];
+     timerRunning = false;
+
+// when the cards are all matched
+clearInterval(interval);
+
  */
