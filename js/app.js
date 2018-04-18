@@ -27,10 +27,17 @@ const btnRestart = document.querySelector("button.restart");
  */
 
 
-// Make the deck ready once the DOM is loaded
+
+/*
+ * Make the deck ready once the DOM is loaded
+*/
+
  document.addEventListener("DOMContentLoaded", innit);
 
-// Start the game
+ /*
+  * Start the Game
+ */
+
  function innit() {
    cards = shuffle(cards);
 
@@ -49,7 +56,11 @@ const btnRestart = document.querySelector("button.restart");
     return moves.innerHTML = score;
    }
 
-//when restart button is clicked the game restart
+
+/*
+* when restart button is clicked the game restart
+*/
+
 restart.addEventListener("click", innit);
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -66,7 +77,10 @@ function shuffle(array) {
     return array;
 }
 
-//create Event listener if cards is clicked
+
+/*
+ * Create Event listener if cards is clicked
+*/
 for ( let i = 0; i < cardContainer.length ; i++){
     cardContainer[i].addEventListener('click', trigger);
 }
@@ -86,13 +100,20 @@ function trigger (evt) {
 }
 
 
-// Flip and show the card
+
+/*
+ * Flip and show the card
+*/
+
 function displayCard(clikedCard) {
   clikedCard.classList.toggle("open");
   clikedCard.classList.toggle("show");
 }
 
-// Add the card to a *list* of "open" cards
+/*
+ * Add the card to a *list* of "open" cards
+*/
+
 function addOpenCards(clikedCard) {
   if (listOfOpenedCards.length < 1 ) {
     listOfOpenedCards.push(clikedCard);
@@ -108,7 +129,11 @@ function addOpenCards(clikedCard) {
   }
 }
 
-// Lock the cards in open position MATCH
+
+/*
+ * Lock the cards in open position MATCH
+*/
+
 function lockMatchCards(clikedCard) {
   listOfOpenedCards[0].classList.add("match");
   clikedCard.classList.add("match");
@@ -119,15 +144,23 @@ function lockMatchCards(clikedCard) {
   NumberOfMatchedCards(clikedCard);
 }
 
-// Remove cards from the list and hide cards
+
+/*
+ * Remove cards from the list and hide cards
+*/
+
 function cardsNotMatching(clikedCard) {
-  setTimeout(displayCard, 350, listOfOpenedCards[0]); // give 1 sec for player to remember
-  setTimeout(displayCard, 350, clikedCard);           //the cards before they flip back to normal
+  setTimeout(displayCard, 300, listOfOpenedCards[0]); // give 1 sec for player to remember
+  setTimeout(displayCard, 300, clikedCard);           //the cards before they flip back to normal
   listOfOpenedCards.length = 0;
   console.log("wrong");
 }
 
-// Counting the number of moves and display the Number of stars
+
+/*
+ * Counts number of moves and display right number of stars
+*/
+
 function moveCounter() {
 if (score < 15) { // for less than 10 moves, 3 Stars
   starsList.innerHTML = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`;
@@ -142,48 +175,57 @@ if (score < 15) { // for less than 10 moves, 3 Stars
   return moves.innerHTML = score;
 }
 
-// Check for the Number of Matched Cards
+
+/*
+ * Check for the Number of Matched Cards
+*/
+
 function NumberOfMatchedCards(clikedCard) {
   if (numberOfMatchedCards < 7) {
     numberOfMatchedCards++;
     console.log(numberOfMatchedCards);
   } else {
-    setTimeout(winning, 500);
+    //setTimeout(winning, 500);
+    winning();
   }
 }
 
+/*
+ * Triggered whenn all cards are matched
+*/
+
 function winning(){
-  console.log("You Win");
-  // display correct values in the Modal Section
+  // Stop the timer
+  stopTheTimer()
+
+  // Collect correct values for the Modal Section
   const finalStars = document.querySelector(".modal-content .stars"); // Numbers of Stars
   finalStars.innerHTML = starsList.innerHTML;
-
   const finalMoves = document.querySelector(".finalMoves"); // Numbers of moves
   finalMoves.innerHTML = score;
-
   const finalTime = document.querySelector(".finalTime"); // Time it took the player to finish
   finalTime.innerHTML = theTimer.innerHTML;
 
-  //stop timer
-  stopTheTimer()
-
-   // Show the Modal Section
+  // Show the Modal Section
   modal.style.display = "flex";
 
 };
 
 
 
-// When the user clicks restart button, close the modal and rstart Game
+/*
+ * When the user clicks restart button, close the modal and rstart Game
+*/
+
 btnRestart.addEventListener("click", function() {
   modal.style.display = "none";
   innit()
 });
 
 
-
-
-// *** TIMER ***
+/*
+ * TIMER
+*/
 
 // timer variables
 var timer = [0,0,0,0];
