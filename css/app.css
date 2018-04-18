@@ -6,7 +6,6 @@ html {
 *::before,
 *::after {
     box-sizing: inherit;
-    /* transition: linear 0.2s; */
 }
 
 html,
@@ -107,4 +106,67 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+/*
+ * Style for modal
+*/
+
+/* The Modal (background) */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal .score-panel {
+  vertical-align: middle;
+  text-align: center;
+  width: 100%;
+}
+
+
+/* Modal Content */
+.modal-content {
+  max-width: 400px;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 8px solid #aa7ecd;
+  width: 50%;
+  text-align: center;
+}
+
+.winning {
+text-align: center;
+margin-top: 0;
+}
+
+button.restart {
+font-size: 1.2em;
+background-color: #02ccba;
+color: white;
+padding: 5px 20px;
+border: none;
+}
+
+button.restart:hover {
+color: #02ccba;
+background-color: white;
+transition: linear 0.2s;
+
+}
+
+span.finalMoves,
+.modal .fa-star,
+.modal .fa-star-o,
+.finalTime {
+color: #aa7ecd;
+font-size: 1.5em;
 }
