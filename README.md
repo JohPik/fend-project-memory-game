@@ -1,20 +1,38 @@
 # Memory Game Project
 
-## Table of Contents
+This web app is the second project of Udacity's Front-end Nanodegree. It is a personal version of the classic memory game "Concentration".
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+## Before Starting
 
-## Instructions
+To use the app, download the [Github repository](https://github.com/JohPik/fend-project-memory-game/archive/master.zip).
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+### Prerequisites
 
-To get started, open `js/app.js` and start building out the app's functionality
+to play the game you will need a modern browser with CSS and Javascript enabled.
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+## Play the game
 
-## Contributing
+### Start the game
+Open index.html. The games start as soon as one card is clicked.
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+### How the win
+The player wins once all cards have successfully been matched. After the player has won, the app displays the number of moves and time that the user took to finish the game. A star rating will also be display (from 0-4).
 
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+### restart the game
+The game can be reset anytime during the game by simply clciking the restart icon in the top left. If all cards are matched, the player needs to click on the restart button in order to restart.
+
+
+## Built With
+* HTML
+* CSS
+* Javascript
+
+
+## Authors
+
+**Johan Piquet** - *forked from* - [richard kalehoff](https://github.com/udacity/fend-project-memory-game).
+
+## Acknowledgments
+
+* timer inspirations from  	[Morten Rand-Hendriksen](https://www.lynda.com/JavaScript-tutorials/JavaScript-Essential-Training/574716-2.html).
+* modal inspirations from [w3schools.com](https://www.w3schools.com/howto/howto_css_modals.asp).
