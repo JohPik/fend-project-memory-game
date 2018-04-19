@@ -58,9 +58,8 @@ const btnRestart = document.querySelector("button.restart");
 
 
 /*
-* when restart button is clicked the game restart
+* Make the deck ready once the DOM is loaded
 */
-
 restart.addEventListener("click", innit);
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -87,14 +86,13 @@ for ( let i = 0; i < cardContainer.length ; i++){
 
 function trigger (evt) {
   let clikedCard = evt.target; // <- the clicked card
-  let clikedCardClass = evt.target.children[0].classList[1]; // <- the class of clicked card symbol
   if (clikedCard.classList.contains("show")) {
     clikedCard.removeEventListener('click', trigger); // <- remove event listener if the card is already flipped
-    console.log("this card is fliped already");
+    //console.log("this card is fliped already");
   } else { // run the code
+    moveCounter();// add one move
     displayCard(clikedCard);//show clicked card
     addOpenCards(clikedCard);// add clicked card to list of open cards
-    moveCounter();// add one move
   }
 
 }
@@ -139,7 +137,7 @@ function lockMatchCards(clikedCard) {
   clikedCard.classList.add("match");
   listOfOpenedCards[0].classList.remove("open");
   clikedCard.classList.remove("open");
-  console.log("it is a matched");
+  //console.log("it is a matched");
   listOfOpenedCards.length = 0;
   NumberOfMatchedCards(clikedCard);
 }
@@ -153,7 +151,7 @@ function cardsNotMatching(clikedCard) {
   setTimeout(displayCard, 300, listOfOpenedCards[0]); // give 1 sec for player to remember
   setTimeout(displayCard, 300, clikedCard);           //the cards before they flip back to normal
   listOfOpenedCards.length = 0;
-  console.log("wrong");
+  //console.log("wrong");
 }
 
 
@@ -164,12 +162,10 @@ function cardsNotMatching(clikedCard) {
 function moveCounter() {
 if (score < 15) { // for less than 10 moves, 3 Stars
   starsList.innerHTML = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`;
-} else if (score < 25) { // for less than 20 moves, 2 Stars
+} else if (score < 35) { // for less than 20 moves, 2 Stars
   starsList.innerHTML = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star-o"></i></li>`;
-} else if (score < 35) { // for less than 30 moves, 1 Stars
+} else { // for less than 30 moves, 1 Stars
   starsList.innerHTML = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star-o"></i></li><li><i class="fa fa-star-o"></i></li>`;
-} else { // for more than 30 moves, 0 Stars
-  starsList.innerHTML = `<li><i class="fa fa-star-o"></i></li><li><i class="fa fa-star-o"></i></li><li><i class="fa fa-star-o"></i></li>`;
 }
   score++
   return moves.innerHTML = score;
@@ -183,7 +179,7 @@ if (score < 15) { // for less than 10 moves, 3 Stars
 function NumberOfMatchedCards(clikedCard) {
   if (numberOfMatchedCards < 7) {
     numberOfMatchedCards++;
-    console.log(numberOfMatchedCards);
+    //console.log(numberOfMatchedCards);
   } else {
     //setTimeout(winning, 500);
     winning();
